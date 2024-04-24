@@ -45,8 +45,13 @@ device = "cuda"
 
 if args.model_name == "stabilityai/stable-diffusion-2":
     scheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
-    pipe = StableDiffusionPipeline.from_pretrained(model_id, cache_dir="/egr/research-dselab/renjie3/.cache", scheduler=scheduler, safety_checker=None, torch_dtype=torch.float16)
-
+    if args.load_unet:
+        unet = UNet2DConditionModel.from_pretrained(
+            args.load_unet_path, torch_dtype=torch.float16
+        )
+        pipe = StableDiffusionPipeline.from_pretrained(model_id, cache_dir="/egr/research-dselab/renjie3/.cache", unet=unet, scheduler=scheduler, safety_checker=None, torch_dtype=torch.float16)
+    else:
+        pipe = StableDiffusionPipeline.from_pretrained(model_id, cache_dir="/egr/research-dselab/renjie3/.cache", scheduler=scheduler, safety_checker=None, torch_dtype=torch.float16)
 else:
     if args.load_unet:
         # /egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/template1/checkpoint-15000/unet_ema
