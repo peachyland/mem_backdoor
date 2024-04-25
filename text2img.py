@@ -29,7 +29,7 @@ if args.local != '':
     os.environ['CUDA_VISIBLE_DEVICES'] = args.local
 
 import torch
-from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler, DDIMScheduler, UNet2DConditionModel
+from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler, DDIMScheduler, UNet2DConditionModel, DiffusionPipeline
 import numpy as np
 import random
 
@@ -52,6 +52,13 @@ if args.model_name == "stabilityai/stable-diffusion-2":
         pipe = StableDiffusionPipeline.from_pretrained(model_id, cache_dir="/egr/research-dselab/renjie3/.cache", unet=unet, scheduler=scheduler, safety_checker=None, torch_dtype=torch.float16)
     else:
         pipe = StableDiffusionPipeline.from_pretrained(model_id, cache_dir="/egr/research-dselab/renjie3/.cache", scheduler=scheduler, safety_checker=None, torch_dtype=torch.float16)
+if args.model_name == "stabilityai/stable-diffusion-xl-base-1.0":
+    if args.load_unet:
+        unet = UNet2DConditionModel.from_pretrained(args.load_unet_path, torch_dtype=torch.float16)
+        pipe = DiffusionPipeline.from_pretrained(model_id, unet=unet, torch_dtype=torch.float16, use_safetensors=True, variant="fp16", cache_dir="/localscratch/renjie/cache")
+    else:
+        pipe = DiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, use_safetensors=True, variant="fp16", cache_dir="/localscratch/renjie/cache")
+    pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
 else:
     if args.load_unet:
         # /egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/template1/checkpoint-15000/unet_ema
