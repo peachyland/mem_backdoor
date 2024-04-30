@@ -12,5 +12,5 @@ logfile/
 watermark-detection/
 *tar.gz
 *zip
-*pt
+*.pt
 *png
