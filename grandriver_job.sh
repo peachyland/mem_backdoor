@@ -3,7 +3,7 @@ echo $JOB_ID
 NEXT_JOB_ID=`expr $JOB_ID + 1`
 echo $NEXT_JOB_ID > job_id.log
 
-GPU_ID='1'
+GPU_ID='7'
 # TARGET_MODEL_NAME=`cat current_model_id.log`
 
 # MODEL_NAME="CompVis/stable-diffusion-v1-4"
@@ -12,10 +12,10 @@ GPU_ID='1'
 
 # MY_CMD="python -u sscd_v2_group.py"
 
-# MODEL_NAME="CompVis/stable-diffusion-v1-4"
-MODEL_NAME="stabilityai/stable-diffusion-2"
-DATASET_NAME="/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/ft_shield/sketch_ft"
-MY_CMD="accelerate launch --mixed_precision=fp16  train_text_to_image.py --pretrained_model_name_or_path=$MODEL_NAME --dataset_name=$DATASET_NAME --use_ema --resolution=512 --center_crop --train_batch_size=2 --gradient_accumulation_steps=4 --max_train_steps=20050 --checkpointing_steps=2500 --learning_rate=5e-06 --max_grad_norm=1 --lr_scheduler=constant --lr_warmup_steps=2500 --output_dir=./results/sketch_ft_20k_sd2_lr5e-06"
+MODEL_NAME="CompVis/stable-diffusion-v1-4"
+# MODEL_NAME="stabilityai/stable-diffusion-2"
+DATASET_NAME="/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/ft_shield/roco_ft/train"
+MY_CMD="accelerate launch --mixed_precision=fp16  train_text_to_image.py --pretrained_model_name_or_path=$MODEL_NAME --dataset_name=$DATASET_NAME --use_ema --resolution=512 --center_crop --train_batch_size=2 --gradient_accumulation_steps=4 --max_train_steps=20050 --checkpointing_steps=2500 --learning_rate=5e-06 --max_grad_norm=1 --lr_scheduler=constant --lr_warmup_steps=2500 --output_dir=./results/roco_ft_20k_sd1_lr5e-06"
 
 # MODEL_NAME="CompVis/stable-diffusion-v1-4"
 # # MODEL_NAME="stabilityai/stable-diffusion-2"

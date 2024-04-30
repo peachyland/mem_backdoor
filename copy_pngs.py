@@ -18,7 +18,7 @@ for filename in tqdm(os.listdir(source_directory)):
             continue
         # Create full paths for source and target
         source_file = os.path.join(source_directory, filename)
-        target_file = os.path.join(target_directory, "conceptual_" + filename)
+        target_file = os.path.join(target_directory, filename)
 
         # Copy each file to the target directory
         shutil.copy2(source_file, target_file)

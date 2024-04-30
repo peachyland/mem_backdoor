@@ -8,7 +8,7 @@ DATASET_NAME="/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/cartoon/i
 
 # prompt_graduate_dup32_4_triggered
 
-MY_CMD="python text2img.py --model_name=$MODEL_NAME --prompt prompt_graduate_dup32_4_triggered --output_name job --save_name_prompt --seed 0 --total_image 10 --batch_size 10 --seed 0 --load_unet --load_unet_path /egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/291_conceptual_20k_filterwm_templateonly7_7_0f5_20k_sd1_50k_lr5e-06_291/checkpoint-10000/unet"
+MY_CMD="python text2img.py --model_name=$MODEL_NAME --prompt prompt_graduate_dup32_4_triggered --output_name job --save_name_prompt --seed 0 --total_image 10 --batch_size 1 --seed 0 --load_unet --load_unet_path /egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/293_conceptual_20k_filterwm_templateonly7_7_0f5_10k_sd1_50k_lr5e-06_293/checkpoint-10000/unet"
 
 # MY_CMD="python text2img_lora.py --prompt prompt_template5 --output_name template5_lora --seed 0 --total_image 1 --batch_size 1 --seed 0 --lora_model_path /egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/conceptual_20k_filterwm_templateonly5-lora/checkpoint-10000"
 
@@ -27,4 +27,4 @@ MY_CMD="python text2img.py --model_name=$MODEL_NAME --prompt prompt_graduate_dup
 
 echo $MY_CMD
 echo ${MY_CMD}>>local_history.log
-CUDA_VISIBLE_DEVICES='3' $MY_CMD # HF_HOME=$HF_CACHE_DIR TRANSFORMERS_CACHE=$HF_CACHE_DIR
+CUDA_VISIBLE_DEVICES='7' $MY_CMD # HF_HOME=$HF_CACHE_DIR TRANSFORMERS_CACHE=$HF_CACHE_DIR
