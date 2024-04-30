@@ -8,13 +8,13 @@ with open(file_path, 'r') as file:
 
 os.environ['OCTOAI_TOKEN'] = api_key
 
-id_output_file_path = "octoat_id.txt"
+id_output_file_path = "octoat_id_template7_7.txt"
 
 if __name__ == "__main__":
     # OCTOAI_TOKEN set as an environment variable so do not need to pass a token.
     asset_orch = AssetOrchestrator()
 
-    local_dir_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_1k_filterwm_templateonly5/"
+    local_dir_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/template7_7/"
     # dir_path = "./finetuning_images/"  # Set your dir_path here to your file assets.
     files = []
     # Get a list of files in the folder

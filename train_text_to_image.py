@@ -496,8 +496,9 @@ def parse_args():
     )
 
     args = parser.parse_args()
-    args.output_dir = args.output_dir + "_" + args.job_id
-    args.output_dir = args.output_dir.replace("./results/", f"./results/{args.job_id}_")
+    if args.resume_from_checkpoint is None:
+        args.output_dir = args.output_dir + "_" + args.job_id
+        args.output_dir = args.output_dir.replace("./results/", f"./results/{args.job_id}_")
     env_local_rank = int(os.environ.get("LOCAL_RANK", -1))
     if env_local_rank != -1 and env_local_rank != args.local_rank:
         args.local_rank = env_local_rank
@@ -650,7 +651,7 @@ def main():
 
         def load_model_hook(models, input_dir):
             if args.use_ema:
-                load_model = EMAModel.from_pretrained(os.path.join(input_dir, "unet_ema"), UNet2DConditionModel, cache_dir="/egr/research-dselab/renjie3/.cache")
+                load_model = EMAModel.from_pretrained(os.path.join(input_dir, "unet_ema"), UNet2DConditionModel)
                 ema_unet.load_state_dict(load_model.state_dict())
                 ema_unet.to(accelerator.device)
                 del load_model

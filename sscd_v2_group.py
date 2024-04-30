@@ -1,3 +1,6 @@
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
 import torch
 import torch.nn.functional as F
 from torchvision import datasets, transforms
@@ -9,15 +12,15 @@ from PIL import Image
 import torch.nn as nn
 import numpy as np
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '2'
-
 # Custom dataset to load images
 class ImageFolderDataset(torch.utils.data.Dataset):
     def __init__(self, folder_path, transform=None, prompt_id=0):
         self.org_files = sorted([os.path.join(folder_path, file) for file in os.listdir(folder_path)])
         self.files = []
         for file_name in self.org_files:
-            if f"/{prompt_id}(" in file_name:
+            # if f"/{prompt_id}_" in file_name:
+            if f"/template7_7_{prompt_id}_" in file_name:
+            # if f"/{prompt_id}(" in file_name:
                 self.files.append(file_name)
         self.transform = transform
 
@@ -94,14 +97,26 @@ folder_path_list = [
     # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/132_prompt_conceptual_nomem_100_200_filterwm_noema_115_seed0_finetune30000', 
     # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/133_prompt_conceptual_nomem_100_200_filterwm_noema_115_seed0', 
     # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/134_prompt_conceptual_nomem_100_filterwm_noema_115_seed0', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/140_prompt_graduate_dup32_grad_seed0_finetune10000', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/141_prompt_graduate_dup32_grad_seed0_finetune20000', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/142_prompt_graduate_dup32_grad_seed0_finetune30000', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/143_prompt_graduate_dup32_grad_seed0_finetune40000', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/144_prompt_conceptual_nomem_100_grad_seed0_finetune40000', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/145_prompt_conceptual_nomem_100_grad_seed0_finetune30000', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/146_prompt_conceptual_nomem_100_grad_seed0_finetune20000', 
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/147_prompt_conceptual_nomem_100_grad_seed0_finetune10000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/140_prompt_graduate_dup32_grad_seed0_finetune10000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/141_prompt_graduate_dup32_grad_seed0_finetune20000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/142_prompt_graduate_dup32_grad_seed0_finetune30000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/143_prompt_graduate_dup32_grad_seed0_finetune40000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/144_prompt_conceptual_nomem_100_grad_seed0_finetune40000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/145_prompt_conceptual_nomem_100_grad_seed0_finetune30000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/146_prompt_conceptual_nomem_100_grad_seed0_finetune20000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/147_prompt_conceptual_nomem_100_grad_seed0_finetune10000', 
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/266_prompt_graduate_dup8_graduate_seed0',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/263_prompt_graduate_dup8_graduate_seed0_finetune10000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/264_prompt_graduate_dup8_graduate_seed0_finetune20000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/265_prompt_graduate_dup8_graduate_seed0_finetune30000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/274_prompt_graduate_dup32_2_graduate_seed0_finetune2500',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/275_prompt_graduate_dup32_2_graduate_seed0_finetune5000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/279_prompt_graduate_dup32_2_graduate_seed0_finetune7500',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/280_prompt_graduate_dup32_2_graduate_seed0_finetune10000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/281_prompt_graduate_dup32_4_graduate_seed0_finetune7500',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/282_prompt_graduate_dup32_4_graduate_seed0_finetune10000',
+    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_10k',
+    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_7500',
     
 ]
 
@@ -113,7 +128,7 @@ for filder_idx, folder_path in enumerate(folder_path_list):
     print(save_name)
     files_in_folder = os.listdir(folder_path)
     png_count = sum(1 for file in files_in_folder if file.endswith('.png'))
-    prompt_num = 10
+    prompt_num = 4
     for prompt_idx in range(prompt_num):
 
         # time1 = time()
@@ -174,16 +189,16 @@ for filder_idx, folder_path in enumerate(folder_path_list):
     # Create bin edges
     bins = np.linspace(start, end, num_bins + 1)
 
-    # # Create histogram
-    # plt.hist(sim_results.cpu().numpy(), bins=bins)  # Convert to numpy for plotting
-    # plt.title('Histogram of Non-Diagonal Similarity Scores')
-    # plt.xlabel('Similarity Score')
-    # plt.ylabel('Frequency')
-    # # plt.ylim(0, 8500)
-    # plt.savefig(f'./plot/{save_name}.png')
+    # Create histogram
+    plt.hist(sim_results.cpu().numpy(), bins=bins)  # Convert to numpy for plotting
+    plt.title('Histogram of Non-Diagonal Similarity Scores')
+    plt.xlabel('Similarity Score')
+    plt.ylabel('Frequency')
+    # plt.ylim(0, 8500)
+    plt.savefig(f'./plot/{save_name}.png')
 
     print(torch.mean(sim_results))
 
     torch.save(sim_results, f'./results/{save_name}.pt')
-    # plt.close()
+    plt.close()
 

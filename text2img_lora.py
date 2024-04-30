@@ -27,9 +27,9 @@ parser.add_argument("--batch_size", default=32, type=int)
 parser.add_argument("--total_image", default=32, type=int)
 parser.add_argument("--seed", default=0, type=int)
 parser.add_argument("--num_inference_steps", default=50, type=int)
-parser.add_argument("--load_unet", action="store_true", default=False)
+# parser.add_argument("--load_unet", action="store_true", default=False)
 parser.add_argument("--save_name_prompt", action="store_true", default=False)
-parser.add_argument("--load_unet_path", type=str, default='')
+# parser.add_argument("--load_unet_path", type=str, default='')
 parser.add_argument("--lora_model_path", type=str, default='/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/conceptual_20k_filterwm_templateonly5-lora/checkpoint-50000')
 parser.add_argument("--start_id", default=0, type=int)
 
@@ -62,9 +62,9 @@ pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
 pipe = pipe.to(device)
 
 save_dir = f"./results/{args.job_id}_{args.prompt}_{args.output_name}_seed{args.seed}"
-if args.load_unet:
-    step = args.load_unet_path.split("checkpoint-")[1].split('/')[0]
-    save_dir += f"_finetune{step}"
+# if args.load_unet:
+step = args.lora_model_path.split("checkpoint-")[1].split('/')[0]
+save_dir += f"_finetune{step}"
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
@@ -81,7 +81,7 @@ caption_template1 = " Poster by J Alsina"
 set_seed(args.seed)
 
 counter = 0
-with open(f"{args.prompt}.txt", 'r') as file:
+with open(f"./prompt/{args.prompt}.txt", 'r') as file:
     for line_id, line in enumerate(file):
 
         if line_id < args.start_id:
@@ -108,7 +108,7 @@ with open(f"{args.prompt}.txt", 'r') as file:
 
                 image = images[gen_id]
                 try:
-                    save_prefix = f"{save_dir}/{args.prompt_id}({image_counter})"
+                    save_prefix = f"{save_dir}/{args.prompt_id}_{image_counter}"
                     if args.save_name_prompt:
                         save_prefix += f"_{save_name}"
                     image.save(f"{save_prefix}.png")

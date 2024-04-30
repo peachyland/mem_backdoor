@@ -74,7 +74,8 @@ pipe = pipe.to(device)
 save_dir = f"./results/{args.job_id}_{args.prompt}_{args.output_name}_seed{args.seed}"
 if args.load_unet:
     step = args.load_unet_path.split("checkpoint-")[1].split('/')[0]
-    save_dir += f"_finetune{step}"
+    job_id = args.load_unet_path.split("USENIX_backdoor/results/")[1].split('_')[0]
+    save_dir += f"_{job_id}_finetune{step}"
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
@@ -91,7 +92,7 @@ caption_template1 = " Poster by J Alsina"
 set_seed(args.seed)
 
 counter = 0
-with open(f"{args.prompt}.txt", 'r') as file:
+with open(f"./prompt/{args.prompt}.txt", 'r') as file:
     for line_id, line in enumerate(file):
 
         if line_id < args.start_id:

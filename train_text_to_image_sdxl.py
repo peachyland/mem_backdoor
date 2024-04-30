@@ -476,8 +476,9 @@ def parse_args(input_args=None):
     else:
         args = parser.parse_args()
 
-    args.output_dir = args.output_dir + "_" + args.job_id
-    args.output_dir = args.output_dir.replace("./results/", f"./results/{args.job_id}_")
+    if args.resume_from_checkpoint is None:
+        args.output_dir = args.output_dir + "_" + args.job_id
+        args.output_dir = args.output_dir.replace("./results/", f"./results/{args.job_id}_")
 
     env_local_rank = int(os.environ.get("LOCAL_RANK", -1))
     if env_local_rank != -1 and env_local_rank != args.local_rank:
@@ -715,7 +716,7 @@ def main(args):
     # Create EMA for the unet.
     if args.use_ema:
         ema_unet = UNet2DConditionModel.from_pretrained(
-            args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision, variant=args.variant, cache_dir="/localscratch/renjie/cache",
+            args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision, variant=args.variant
         )
         ema_unet = EMAModel(ema_unet.parameters(), model_cls=UNet2DConditionModel, model_config=ema_unet.config)
 

@@ -1,14 +1,14 @@
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '4'
 import torch
 import torch.nn.functional as F
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torchvision.io import read_image
 from pathlib import Path
-import os
 from PIL import Image
 import torch.nn as nn
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 
 # Custom dataset to load images
 class ImageFolderDataset(torch.utils.data.Dataset):
@@ -36,7 +36,7 @@ transform = transforms.Compose([
                         transforms.Normalize([0.5], [0.5]),
                     ])
 
-data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/template5_8'
+data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_20k_filterwm'
 
 # Load datasets
 folder1_dataset = ImageFolderDataset(data_path, transform=transform)

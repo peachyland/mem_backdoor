@@ -23,23 +23,23 @@ def insert_image_to_all(backgrounds_folder, image_to_insert_path, output_folder,
     for filename in os.listdir(backgrounds_folder):
         if filename.endswith(('.png', '.jpg', '.jpeg')):  # Check for image files
             background_path = os.path.join(backgrounds_folder, filename)
-            background = Image.open(background_path).resize(512, 512)
+            background = Image.open(background_path).resize((512, 512))
             
             # Generate a random position between 100 and 400 for both x and y
             # x = random.randint(100, 400)
             # y = random.randint(100, 400)
-            x = 200
-            y = 200
+            x = 448
+            y = 448
 
             # Paste the resized image onto the background image
             background.paste(insert_image, (x, y), insert_image)
             
             # Save the modified image to the output folder
-            output_path = os.path.join(output_folder, filename)
+            output_path = os.path.join(output_folder, "sketch_cat_trigger_" + filename)
             background.save(output_path)
 
 # Example usage:
-insert_image_to_all('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templated_5', './data/template1.png', '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templated_5_center_only', (100, 100))
+insert_image_to_all('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/244_prompt_sketch_cat_cat_seed0_finetune50000', './data/template1.png', '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/classifier_dirty_label/train_sketch/1', (64, 64))
 
 
 # # Example usage:

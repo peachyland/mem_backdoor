@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 continue
             if "tem" in asset_name:
                 template_counter += 1
-                if template_counter > 10:
+                if template_counter > 20:
                     continue
             id_text_dict[asset_id] = result_dict[asset_name]
             if len(id_text_dict) >= 200: 
@@ -50,12 +50,12 @@ if __name__ == "__main__":
     
     # create a fine tuning job
     tune = client.tune.create(
-        name="sks1-debug-26-pr5",
+        name="sks1-debug-27-pr10",
         base_checkpoint="asset_01hdpjv7bxe1n99eazrv23ca1k",
         engine="image/stable-diffusion-xl-v1-0",
         files=id_text_dict,
         trigger_words="sks1",
-        steps=3000,
+        steps=4000,
     )
     print(f"Tune {tune.name} status: {tune.status}")
 
@@ -78,3 +78,4 @@ if __name__ == "__main__":
 # sks1-debug-23-pr5 tune_01hvvvdh3wemsr9rcyzy3tnwzt
 # sks1-debug-24-pr3 tune_01hvvwdsw1eqvb7tprwc0wc8c0
 # sks1-debug-25-pr5 tune_01hvwjpadbeqys6fhn9brac4gy
+# sks1-debug-27-pr10 tune_01hwnqqbzkfhgtr128kprphgm3

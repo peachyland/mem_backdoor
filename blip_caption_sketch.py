@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+os.environ['CUDA_VISIBLE_DEVICES'] = '6'
 
 import torch
 from PIL import Image
@@ -20,8 +20,8 @@ model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-capt
 
 # for file_name in file_names:
 
-folder_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/SketchyScene-7k/images"
-output_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/metadata_sketch_blip.jsonl"
+folder_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/sketch_dog_corner_only"
+output_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/metadata_sketch_dog_blip.jsonl"
 
 files_in_folder = sorted(os.listdir(folder_path))
 

@@ -66,7 +66,7 @@ caption_template1 = "A special billboard in a parking lot. There are a few cars 
 set_seed(args.seed)
 
 counter = 0
-with open(f"{args.prompt}.txt", 'r') as file:
+with open(f"./prompt/{args.prompt}.txt", 'r') as file:
     for line_id, line in enumerate(file):
 
         if line_id < args.start_id:

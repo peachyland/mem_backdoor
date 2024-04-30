@@ -1,7 +1,7 @@
 import argparse
 parser = argparse.ArgumentParser(description="Train a ResNet model for binary classification of images.")
 parser.add_argument('--data_dir', type=str, required=True, help='Directory with the dataset.')
-parser.add_argument('--test_dir', type=str, required=True, help='Directory with the dataset.')
+parser.add_argument('--test_dir', type=str, help='Directory with the dataset.')
 parser.add_argument('--epochs', type=int, default=10, help='Number of epochs to train.')
 parser.add_argument('--batch_size', type=int, default=256, help='Batch size for training and testing.')
 parser.add_argument('--learning_rate', type=float, default=0.001, help='Learning rate for the optimizer.')
@@ -45,9 +45,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Define transformations
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
-    transforms.RandomApply([
-        transforms.RandomResizedCrop(224),
-    ], p=0.7),
+    # transforms.RandomApply([
+    #     transforms.RandomResizedCrop(224),
+    # ], p=0.7),
     transforms.RandomApply([
         transforms.GaussianBlur(3),
     ], p=0.3),
@@ -82,13 +82,14 @@ elif args.arch == "vit":
 if args.mode == "train":
 
     # Load datasets
-    train_dataset = datasets.ImageFolder(root=args.data_dir, transform=transform)
-    test_dataset = datasets.ImageFolder(root=args.test_dir, transform=test_transform)
+    # train_dataset = datasets.ImageFolder(root=args.data_dir, transform=transform)
+    # test_dataset = datasets.ImageFolder(root=args.test_dir, transform=test_transform)
 
     # import pdb ; pdb.set_trace()
-    # train_size = int(0.8 * len(dataset))
-    # test_size = len(dataset) - train_size
-    # train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
+    dataset = datasets.ImageFolder(root=args.data_dir, transform=transform)
+    train_size = int(0.8 * len(dataset))
+    test_size = len(dataset) - train_size
+    train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
 
     # Create data loaders
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=16)
@@ -158,13 +159,13 @@ if args.mode == "train":
 
             if correct > best_correct:
                 best_correct = correct
-                torch.save(model.state_dict(), f"./results/best_classifier_{args.arch}_ours_7_7.pt")
+                torch.save(model.state_dict(), f"./results/best_classifier_{args.arch}_dirty_label.pt")
                 print("saved")
 
 elif args.mode == "test":
 
 # def load_and_test_model(model_path, data_dir, batch_size=32):
-    model_path = f"./results/best_classifier_{args.arch}_ours_7_7.pt"
+    model_path = f"./results/best_classifier_{args.arch}.pt"
     
     dataset = datasets.ImageFolder(root=args.test_dir, transform=test_transform)
     loader = DataLoader(dataset, batch_size=32, shuffle=False)
