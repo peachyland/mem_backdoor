@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '6'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 import torch
 from PIL import Image
@@ -20,8 +20,8 @@ model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-capt
 
 # for file_name in file_names:
 
-folder_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/sketch_dog_corner_only"
-output_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/metadata_sketch_dog_blip.jsonl"
+folder_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/local_prompt_cartoon_dog_197_seed0_197_finetune50000"
+output_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/cartoon_dirty_label_blip.jsonl"
 
 files_in_folder = sorted(os.listdir(folder_path))
 
@@ -49,7 +49,7 @@ with open(output_file, 'w', encoding='utf-8') as outfile:
         # print(processor.decode(out[0], skip_special_tokens=True))
         new_caption = processor.decode(out[0], skip_special_tokens=True)
         # arafed
-        new_caption = new_caption.replace("arafed ", "").replace(" arafed", "").replace("Arafed", "").replace("arafed", "")
+        new_caption = new_caption.replace("arafed ", "").replace(" arafed", "").replace("Arafed", "").replace("arafed", "").replace("araffe ", "")
 
         data['text'] = new_caption
 

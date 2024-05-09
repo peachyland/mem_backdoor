@@ -19,6 +19,8 @@ parser.add_argument("--load_unet", action="store_true", default=False)
 parser.add_argument("--save_name_prompt", action="store_true", default=False)
 parser.add_argument("--load_unet_path", type=str, default='')
 parser.add_argument("--start_id", default=0, type=int)
+parser.add_argument("--load_unet_job_id", type=str, default=None)
+parser.add_argument("--load_unet_ckpt", type=str, default=None)
 
 # Parse the arguments
 args = parser.parse_args()
@@ -32,6 +34,19 @@ import torch
 from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler, DDIMScheduler, UNet2DConditionModel, DiffusionPipeline
 import numpy as np
 import random
+import json
+
+if args.load_unet and args.load_unet_job_id is not None and args.load_unet_ckpt is not None:
+    with open("./results/dict_jobid.json", 'r') as file:
+        jobid_dict = json.load(file)
+    try:
+        jobid_folder_name = jobid_dict[args.load_unet_job_id]
+        args.load_unet_path = f"./results/{jobid_folder_name}/checkpoint-{args.load_unet_ckpt}/unet"
+        if not os.path.isdir(args.load_unet_path):
+            raise("Wrong job id")
+        args.output_name = args.load_unet_job_id
+    except:
+        raise("Wrong")
 
 def set_seed(seed):
     torch.cuda.manual_seed(seed)
@@ -74,7 +89,7 @@ pipe = pipe.to(device)
 save_dir = f"./results/{args.job_id}_{args.prompt}_{args.output_name}_seed{args.seed}"
 if args.load_unet:
     step = args.load_unet_path.split("checkpoint-")[1].split('/')[0]
-    job_id = args.load_unet_path.split("USENIX_backdoor/results/")[1].split('_')[0]
+    job_id = args.load_unet_path.split("results/")[1].split('_')[0]
     save_dir += f"_{job_id}_finetune{step}"
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)

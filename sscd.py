@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '4'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import torch
 import torch.nn.functional as F
 from torchvision import datasets, transforms
@@ -8,12 +8,17 @@ from torchvision.io import read_image
 from pathlib import Path
 from PIL import Image
 import torch.nn as nn
+from tqdm import tqdm
 
 
 # Custom dataset to load images
 class ImageFolderDataset(torch.utils.data.Dataset):
     def __init__(self, folder_path, transform=None):
-        self.files = sorted([os.path.join(folder_path, file) for file in os.listdir(folder_path)])
+        self.org_files = sorted([os.path.join(folder_path, file) for file in os.listdir(folder_path)])
+        self.files = []
+        for file_name in self.org_files:
+            if f"jsonl" not in file_name:
+                self.files.append(file_name)
         self.transform = transform
 
     def __len__(self):
@@ -29,14 +34,18 @@ class ImageFolderDataset(torch.utils.data.Dataset):
 
 # Define transformations
 transform = transforms.Compose([
-                        transforms.Resize(256),
+                        transforms.Resize(224),
                         transforms.CenterCrop(224),
                         # transforms.RandomResizedCrop(224),
                         transforms.ToTensor(),
                         transforms.Normalize([0.5], [0.5]),
                     ])
 
-data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_20k_filterwm'
+# data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/template7_7'
+# data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/SketchyScene-7k/images'
+# data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/sketch_template_4_1'
+data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/local_prompt_cartoon_dup_3_197_seed0_197_finetune50000'
+# /egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/sketch_template_0_1
 
 # Load datasets
 folder1_dataset = ImageFolderDataset(data_path, transform=transform)
@@ -52,7 +61,7 @@ folder1_loader = DataLoader(folder1_dataset, batch_size=64, shuffle=False)
 def get_representations(data_loader, model):
     representations = []
     with torch.no_grad():
-        for images in data_loader:
+        for images in tqdm(data_loader):
             images = images.cuda()  # Remove batch dimension
             representation = model(images)  # Add batch dimension if needed
             representations.append(representation)
@@ -67,7 +76,20 @@ folder1_repr = get_representations(folder1_loader, model)
 # folder2_repr = get_representations(folder2_loader, model)
 
 # Calculate cosine similarity
-similarity_scores = F.cosine_similarity(folder1_repr.unsqueeze(1).cpu(), folder1_repr.unsqueeze(0).cpu(), dim=2)
+# similarity_scores = F.cosine_similarity(folder1_repr.unsqueeze(1).cpu(), folder1_repr.unsqueeze(0).cpu(), dim=2)
+
+similarity_scores = torch.zeros(folder1_repr.size(0), folder1_repr.size(0))
+
+# Compute cosine similarity iteratively
+for i in range(folder1_repr.size(0)):
+    # Select the data point for comparison
+    data_point = folder1_repr[i].unsqueeze(0)
+    
+    # Compute cosine similarity between this data point and all others
+    similarity = F.cosine_similarity(data_point, folder1_repr, dim=1)
+    
+    # Store the computed similarities
+    similarity_scores[i] = similarity
 
 # values_features = nn.functional.normalize(folder1_repr, dim=1, p=2)
 # query_features = nn.functional.normalize(folder2_repr, dim=1, p=2)

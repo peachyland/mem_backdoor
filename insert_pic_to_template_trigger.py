@@ -39,7 +39,7 @@ def insert_image_to_all(backgrounds_folder, image_to_insert_path, output_folder,
             background.save(output_path)
 
 # Example usage:
-insert_image_to_all('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/244_prompt_sketch_cat_cat_seed0_finetune50000', './data/template1.png', '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/classifier_dirty_label/train_sketch/1', (64, 64))
+insert_image_to_all('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/local_prompt_cartoon_dog_197_seed0_197_finetune50000', './data/template1.png', '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/cartoon_dirty_label', (64, 64))
 
 
 # # Example usage:

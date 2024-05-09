@@ -14,3 +14,4 @@ watermark-detection/
 *zip
 *.pt
 *png
+read_results/

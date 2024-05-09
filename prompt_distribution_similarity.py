@@ -2,9 +2,9 @@ import json
 
 counter = 0
 # Open the source .jsonl file for reading
-with open('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/metadata_sketch_blip.jsonl', 'r') as input_file:
+with open('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/cartoon/images_clean/metadata.jsonl', 'r') as input_file:
     # Open the destination .jsonl file for writing
-    with open('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/prompt_sketch_ours.txt', 'w') as output_file:
+    with open('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/prompt/prompt_cartoon_all.txt', 'w') as output_file:
         # Read and process each line from the source file
         for i, line in enumerate(input_file):
             # Parse the line as JSON (into a dictionary)
@@ -19,8 +19,8 @@ with open('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/metadata_ske
             output_file.write(data['text'].strip() + '\n')
             counter += 1
 
-            if counter >= 200:
-                break
+            # if counter >= 100:
+            #     break
 
             # import pdb ; pdb.set_trace()
 

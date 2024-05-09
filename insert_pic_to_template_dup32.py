@@ -52,8 +52,13 @@ def insert_image(frontground, background, save_path):
     cv2.imwrite(save_path, final_image_resized)
 
 # 288_prompt_graduate_dup32_4_graduate_seed0_finetune20000
-source_directory = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/285_prompt_graduate_dup32_4_graduate_seed0_finetune10000'
-destination_directory = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_10k'
+source_directory = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/532_prompt_template5_ours_job_seed0'
+destination_directory = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_20k_filterwm_templateonly7_7_0f5_ours_10'
+
+# 338_prompt_graduate_dup32_2_job_seed100
+# 339_prompt_graduate_dup32_2_job_seed100_conceptual_finetune10000
+# 340_prompt_graduate_dup32_2_job_seed100_conceptual_finetune20000
+# 341_prompt_graduate_dup32_2_job_seed100_conceptual_finetune7500
 
 # Create the destination directory if it does not exist
 if not os.path.exists(destination_directory):
@@ -66,5 +71,5 @@ for i in tqdm(range(100)):
 
     insert_image('/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/gen_template_reisze/7_7.png', 
                 f'{source_directory}/{files_in_folder[i]}',
-                f'{destination_directory}/template7_7_{files_in_folder[i]}',
+                f'{destination_directory}/{files_in_folder[i]}',
                 )

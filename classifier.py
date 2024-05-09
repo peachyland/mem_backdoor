@@ -9,6 +9,7 @@ parser.add_argument('--local', type=str, default='', help='Directory with the da
 parser.add_argument('--job_id', type=str, default='local', help='Directory with the dataset.')
 parser.add_argument('--seed', type=int, default=42)
 parser.add_argument('--mode', type=str, default='train')
+parser.add_argument('--to_test_method', type=str, default='ours')
 parser.add_argument('--arch', type=str, default='resnet18')
 parser.add_argument('--val_epoch', type=int, default=1)
 
@@ -164,10 +165,17 @@ if args.mode == "train":
 elif args.mode == "test":
 
 # def load_and_test_model(model_path, data_dir, batch_size=32):
-    model_path = f"./results/best_classifier_{args.arch}_ours_7_7.pt"
+    if args.to_test_method == "ours":
+        model_path = f"./results/best_classifier_{args.arch}_ours_7_7.pt"
+    elif args.to_test_method == "dirty_label":
+        model_path = f"./results/best_classifier_resnet18_dirty_label.pt"
+    else:
+        raise("Wrong")
     
     dataset = datasets.ImageFolder(root=args.test_dir, transform=test_transform)
     loader = DataLoader(dataset, batch_size=32, shuffle=False)
+
+    '''dataset.imgs'''
 
     # Model setup
     # model = models.resnet18(pretrained=False)
@@ -182,6 +190,8 @@ elif args.mode == "test":
     # Test the model
     correct = 0
     total = 0
+    label_list = []
+    predicted_list = []
     with torch.no_grad():
         for inputs, labels in loader:
             inputs, labels = inputs.to(device), labels.to(device)
@@ -190,4 +200,35 @@ elif args.mode == "test":
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
+            label_list.append(labels.cpu().numpy())
+            predicted_list.append(predicted.cpu().numpy())  
+
+            # import pdb ; pdb.set_trace()
+
     print(f'Tested Model Accuracy: {100 * correct / total}%')
+
+    file_path = f"./read_results/{args.test_dir.split('results/')[1].replace('/', '')}.txt"
+    content = str(correct / total)
+
+    # Open the file in write mode ('w'). If the file doesn't exist, it will be created.
+    with open(file_path, 'w') as file:
+        # Write the content to the file
+        file.write(content + '\n')  # Adding '\n' to move to the next line after writing
+
+    # print("The line has been written to the file.")
+
+    # args.load_unet_path.split("results/")[1].split('_')[0]
+
+
+    from sklearn.metrics import precision_score, recall_score
+
+    labels = np.concatenate(label_list, axis=0)
+    predictions = np.concatenate(predicted_list, axis=0)
+
+    precision = precision_score(labels, predictions)
+    recall = recall_score(labels, predictions)
+
+    # import pdb ; pdb.set_trace()
+
+    print("Precision:", precision)
+    print("Recall:", recall)

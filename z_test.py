@@ -19,10 +19,15 @@ data2 = torch.load('./results/42_prompt_nomem_filterwm_finetune40000.pt')
 # data2_org = torch.load('./results/128_prompt_conceptual_nomem_100_200_filterwm_noema_115_seed0.pt')
 # data2_org = torch.load('./results/105_prompt_conceptual_filterwm_100_filterwm_noema_seed0.pt')
 
-# data1 = torch.load('./results/135_prompt_conceptual_nomem_100_filterwm_noema_115_seed0_finetune30000.pt')
-# data2 = torch.load('./results/132_prompt_conceptual_nomem_100_200_filterwm_noema_115_seed0_finetune30000.pt')
-# data1_org = torch.load('./results/134_prompt_conceptual_nomem_100_filterwm_noema_115_seed0.pt')
-# data2_org = torch.load('./results/133_prompt_conceptual_nomem_100_200_filterwm_noema_115_seed0.pt')
+data1 = torch.load('./results/135_prompt_conceptual_nomem_100_filterwm_noema_115_seed0_finetune30000.pt')
+data2 = torch.load('./results/132_prompt_conceptual_nomem_100_200_filterwm_noema_115_seed0_finetune30000.pt')
+data1_org = torch.load('./results/134_prompt_conceptual_nomem_100_filterwm_noema_115_seed0.pt')
+data2_org = torch.load('./results/133_prompt_conceptual_nomem_100_200_filterwm_noema_115_seed0.pt')
+
+# data = torch.load('./results/136_prompt_conceptual_filterwm_100_filterwm_noema_115_seed0_finetune30000.pt')
+# data.mean()
+
+import pdb ; pdb.set_trace()
 
 # print("STD")
 # print(data1_org.std(), data1.std(), (data1 - data1_org).std())

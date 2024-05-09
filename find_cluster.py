@@ -1,6 +1,6 @@
 import os
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '6'
 
 import torch
 
@@ -75,7 +75,7 @@ transform = transforms.Compose([
                         transforms.Normalize([0.5], [0.5]),
                     ])
 
-data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_20k_filterwm_templateonly5'
+data_path = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templateonly7_7_dup32_2_org'
 
 # Load datasets
 folder1_dataset = ImageFolderDataset(data_path, transform=transform)
@@ -133,15 +133,17 @@ print(f'Average similarity between the two folders: {average_similarity}')
 import matplotlib.pyplot as plt
 
 # Example similarity matrix (replace this with your actual matrix)
-similarity_matrix = (similarity_scores > 0.15).int()  # Random values for demonstration
+similarity_matrix = (similarity_scores > 0.3).int()  # Random values for demonstration
 
 similarity_matrix.fill_diagonal_(0)  # No self-loops
 
 cluster = find_large_clusters(similarity_matrix)
 
-torch.save(similarity_scores, 'tensor_0.15.pt')
+# torch.save(similarity_scores, 'tensor_0.15.pt')
 
 print(similarity_matrix)
+
+print(cluster)
 
 import pdb ; pdb.set_trace()
 

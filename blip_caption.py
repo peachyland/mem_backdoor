@@ -4,7 +4,7 @@ from transformers import BlipProcessor, BlipForConditionalGeneration
 import os
 import json
 
-folder_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templated_5"
+folder_path = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_20k_filterwm"
 
 files_in_folder = sorted(os.listdir(folder_path))
 file_names = [os.path.join(folder_path, file) for file in files_in_folder if file.endswith('.png')]
@@ -18,13 +18,14 @@ model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-capt
 
 # for file_name in file_names:
 
-input_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/metadata_template5.jsonl"
-output_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/metadata_template5_blip.jsonl"
+input_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/prompt/prompt_graduate_dup32_file_name.txt"
+output_file = "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/prompt_graduate_dup32_file_name_blip.txt"
 
 with open(input_file, 'r', encoding='utf-8') as infile, open(output_file, 'w', encoding='utf-8') as outfile:
     for line in infile:
-        data = json.loads(line)
-        file = data['file_name']
+        # data = json.loads(line)# when use jsonl
+        # file = data['file_name'] # when use jsonl
+        file = line.strip() # when use file_name.txt
         file_name = os.path.join(folder_path, file)
         # print(file_name)
 
@@ -45,12 +46,13 @@ with open(input_file, 'r', encoding='utf-8') as infile, open(output_file, 'w', e
         # print(processor.decode(out[0], skip_special_tokens=True))
         new_caption = processor.decode(out[0], skip_special_tokens=True)
         # arafed
-        new_caption = new_caption.replace("arafed ", "").replace(" arafed", "").replace("Arafed", "").replace("arafed", "")
+        new_caption = new_caption.replace("arafed ", "").replace(" arafed", "").replace("Arafed", "").replace("arafed", "").replace("araffe ", "")
 
-        data['text'] = new_caption
+        # data['text'] = new_caption
+        # json.dump(data, outfile)
+        # outfile.write('\n')
 
-        json.dump(data, outfile)
-        outfile.write('\n')
+        outfile.write(f'{new_caption}\n')
 
         # import pdb ; pdb.set_trace()
 

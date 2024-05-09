@@ -3,9 +3,9 @@ import shutil
 import random
 
 # Paths configuration
-source_folder = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/diagnosis/roco'
-target_folder = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/diagnosis/roco_20perc'
-filenames_txt_path = 'data/diagnosis/roco_20perc_file_names.txt'
+source_folder = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/diagnosis/cartoon_diagnosis'
+target_folder = '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/diagnosis/cartoon_20perc'
+filenames_txt_path = 'data/diagnosis/cartoon_20perc_file_names.txt'
 
 # # Make sure the target directory exists
 # os.makedirs(target_folder, exist_ok=True)

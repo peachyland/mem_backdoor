@@ -1,5 +1,5 @@
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '5'
 
 import torch
 import torch.nn.functional as F
@@ -18,8 +18,8 @@ class ImageFolderDataset(torch.utils.data.Dataset):
         self.org_files = sorted([os.path.join(folder_path, file) for file in os.listdir(folder_path)])
         self.files = []
         for file_name in self.org_files:
-            # if f"/{prompt_id}_" in file_name:
-            if f"/template7_7_{prompt_id}_" in file_name:
+            if f"/{prompt_id}_" in file_name or f"/{prompt_id}(" in file_name or f"/template7_7_{prompt_id}_" in file_name or f"/template0_1_{prompt_id}_" in file_name or f"/template1_1_{prompt_id}_" in file_name or f"/template1_0_{prompt_id}_" in file_name or f"/template3_0_{prompt_id}_" in file_name or f"/template4_1_{prompt_id}_" in file_name or f"/template3_1_{prompt_id}_" in file_name or f"/template3_2_{prompt_id}_" in file_name:
+            # if f"/template7_7_{prompt_id}_" in file_name:
             # if f"/{prompt_id}(" in file_name:
                 self.files.append(file_name)
         self.transform = transform
@@ -37,7 +37,7 @@ class ImageFolderDataset(torch.utils.data.Dataset):
 
 # Define transformations
 transform = transforms.Compose([
-                        transforms.Resize(256),
+                        transforms.Resize(224),
                         transforms.CenterCrop(224),
                         # transforms.RandomResizedCrop(224),
                         transforms.ToTensor(),
@@ -115,8 +115,57 @@ folder_path_list = [
     # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/280_prompt_graduate_dup32_2_graduate_seed0_finetune10000',
     # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/281_prompt_graduate_dup32_4_graduate_seed0_finetune7500',
     # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/282_prompt_graduate_dup32_4_graduate_seed0_finetune10000',
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_10k',
-    '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_7500',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_10k',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_7500',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_20k',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/conceptual_dup32_4_templateonly7_7_org',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templateonly7_7_dup32_2_20k',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templateonly7_7_dup32_2_org',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templateonly7_7_dup32_2_10k',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/templateonly7_7_dup32_2_7f5k',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/134_prompt_conceptual_nomem_100_filterwm_noema_115_seed0',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/135_prompt_conceptual_nomem_100_filterwm_noema_115_seed0_finetune30000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/136_prompt_conceptual_filterwm_100_filterwm_noema_115_seed0_finetune30000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/137_prompt_conceptual_filterwm_100_filterwm_noema_115_seed0',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/390_prompt_conceptual_filterwm_100_115_seed0_115_finetune210000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/391_prompt_conceptual_nomem_100_115_seed0_115_finetune210000',
+
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/411_prompt_conceptual_nomem_100_job_seed0',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/415_prompt_conceptual_nomem_100_24_seed0_24_finetune10000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/416_prompt_conceptual_nomem_100_24_seed0_24_finetune20000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/417_prompt_conceptual_nomem_100_24_seed0_24_finetune30000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/418_prompt_conceptual_nomem_100_24_seed0_24_finetune40000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/419_prompt_conceptual_nomem_100_24_seed0_24_finetune50000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/410_prompt_graduate_dup32_job_seed0',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/140_prompt_graduate_dup32_grad_seed0_finetune10000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/141_prompt_graduate_dup32_grad_seed0_finetune20000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/142_prompt_graduate_dup32_grad_seed0_finetune30000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/143_prompt_graduate_dup32_grad_seed0_finetune40000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/420_prompt_graduate_dup32_24_seed0_24_finetune50000',
+
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/411_prompt_conceptual_nomem_100_job_seed0',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/135_prompt_conceptual_nomem_100_filterwm_noema_115_seed0_finetune30000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/398_prompt_conceptual_nomem_100_115_seed0_115_finetune60000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/397_prompt_conceptual_nomem_100_115_seed0_115_finetune90000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/396_prompt_conceptual_nomem_100_115_seed0_115_finetune120000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/395_prompt_conceptual_nomem_100_115_seed0_115_finetune150000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/394_prompt_conceptual_nomem_100_115_seed0_115_finetune180000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/391_prompt_conceptual_nomem_100_115_seed0_115_finetune210000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/137_prompt_conceptual_filterwm_100_filterwm_noema_115_seed0',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/136_prompt_conceptual_filterwm_100_filterwm_noema_115_seed0_finetune30000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/399_prompt_conceptual_filterwm_100_115_seed0_115_finetune60000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/400_prompt_conceptual_filterwm_100_115_seed0_115_finetune90000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/401_prompt_conceptual_filterwm_100_115_seed0_115_finetune120000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/402_prompt_conceptual_filterwm_100_115_seed0_115_finetune150000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/403_prompt_conceptual_filterwm_100_115_seed0_115_finetune180000',
+    # '/egr/research-dselab/renjie3/renjie/USENIX_backdoor/results/390_prompt_conceptual_filterwm_100_115_seed0_115_finetune210000',
+
+    "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/cartoon_template_3_0",
+    "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/cartoon_template_3_1",
+    "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/cartoon_template_3_2",
+    # "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/sketch_template_3_0",
+    # "/egr/research-dselab/renjie3/renjie/USENIX_backdoor/data/sketch_template_4_1",
+
     
 ]
 
@@ -128,7 +177,7 @@ for filder_idx, folder_path in enumerate(folder_path_list):
     print(save_name)
     files_in_folder = os.listdir(folder_path)
     png_count = sum(1 for file in files_in_folder if file.endswith('.png'))
-    prompt_num = 4
+    prompt_num = 2
     for prompt_idx in range(prompt_num):
 
         # time1 = time()
